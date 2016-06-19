@@ -42,11 +42,22 @@ while True: # The main game loop
 
 
     DISPLAYSURF.blit(fighterImg, (catx,caty))
-
-    for event in pygame.event.get():
+    
+    for event in pygame.event.get(): # Event handling loop
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
+        #Event handling for moving the player's plane. Uses either WASD or arrow keys. 
+        if event.type == KEYDOWN:
+            if event.key in (KEY_LEFT, K_a):
+                direction = 'left'
+            if event.key in (KEY_RIGHT, K_d):
+                direction = 'right'
+            if event.key in (KEY_DOWN, K_s):
+                direction = 'down'
+            if event.key in (KEY_UP, K_w):
+                direction = 'up'
+        
 
 
     pygame.display.update()
