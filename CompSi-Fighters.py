@@ -49,13 +49,13 @@ while True: # The main game loop
             sys.exit()
         #Event handling for moving the player's plane. Uses either WASD or arrow keys. 
         if event.type == KEYDOWN:
-            if event.key in (KEY_LEFT, K_a):
+            if event.key in (K_LEFT, K_a):
                 direction = 'left'
-            if event.key in (KEY_RIGHT, K_d):
+            if event.key in (K_RIGHT, K_d):
                 direction = 'right'
-            if event.key in (KEY_DOWN, K_s):
+            if event.key in (K_DOWN, K_s):
                 direction = 'down'
-            if event.key in (KEY_UP, K_w):
+            if event.key in (K_UP, K_w):
                 direction = 'up'
         
 
