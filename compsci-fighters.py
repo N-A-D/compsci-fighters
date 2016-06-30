@@ -24,7 +24,7 @@ def main():
 	
 	global MENU_FONT, DISPLAYSURF
 	
-	DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT), 0, 32)
+	DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT), RESIZABLE)
 	pygame.display.set_caption('Dog fighter')
 	
 	while True:
@@ -56,6 +56,8 @@ def main():
 					if event.key == K_ESCAPE:
 						pygame.quit()
 						sys.exit()
+			if event.type == VIDEORESIZE:
+				DISPLAYSURF = pygame.display.set_mode(event.dict['size'], RESIZABLE)
 			if event.type == KEYUP:
 				player_direction =''
 			if event.type == QUIT:
