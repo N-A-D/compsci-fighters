@@ -16,6 +16,7 @@ MAIN_BG = (56, 134, 232)
 
 def main():
 	pygame.init()
+	# Creates the player's plane and set its location
 	player = pygame.image.load('new1.png')
 	playerX = int(WINDOWWIDTH/2) - int(player.get_rect().width/2)
 	playerY = WINDOWHEIGHT - player.get_rect().height
@@ -30,6 +31,7 @@ def main():
 	
 	while True:
 		DISPLAYSURF.fill(MAIN_BG)
+		# The four if's allow the player to move. 
 		if player_direction == 'left':
 			playerX -= deltaX
 		if player_direction == 'right':
@@ -38,10 +40,11 @@ def main():
 			playerY -= deltaY
 		if player_direction == 'down':
 			playerY += deltaY
-		
+		# Draw the player to the screen
 		DISPLAYSURF.blit(player, (playerX, playerY))
-		
+		# Event handling
 		for event in pygame.event.get():
+			# Event conditions and results for player movements
 			if event.type == KEYDOWN:
 				if event.key in (K_LEFT, K_a):
 					player_direction = 'left'
@@ -51,9 +54,10 @@ def main():
 					player_direction = 'up'
 				if event.key in (K_DOWN, K_s):
 					player_direction = 'down'
+				# Game halting conditions
 				if event.key in (K_ESCAPE, K_p):
 					if event.key == K_p:
-						showPausedSreen()
+						showPausedSreen(DISPLAYSURF)
 					if event.key == K_ESCAPE:
 						pygame.quit()
 						sys.exit()
@@ -68,22 +72,24 @@ def main():
 		
 		pygame.display.update()
 		FPSCLOCK.tick(FPS)
-		
-def showPausedSreen():
+
+#Pauses the game
+def showPausedSreen(surf):
 	pausedFont = pygame.font.Font('freesansbold.ttf',18)
 	while True:
-		DISPLAYSURF.fill(PAUSED_BG)
-
+		surf.fill(PAUSED_BG)
+		# Surace obj that displays 'Paused'
 		pausedSurf = pausedFont.render('PAUSED', True, PAUSED_FC)
 		pausedRect = pausedSurf.get_rect()
-		pausedRect.center = (int(WINDOWWIDTH/2)), (int(WINDOWHEIGHT/2))
-		DISPLAYSURF.blit(pausedSurf, pausedRect)
-		
+		pausedRect.center = (int(surf.get_width()/2)), (int(surf.get_height()/2))
+		surf.blit(pausedSurf, pausedRect)
+		# Surface obj that displays how to unpause
 		unPauseButtonSurf = pausedFont.render('Press \'p\' to continue.', True, PAUSED_FC)
 		unPauseButtonRect = unPauseButtonSurf.get_rect()
-		unPauseButtonRect.center = (int(WINDOWWIDTH/2), int(WINDOWHEIGHT/2) + 25)
-		DISPLAYSURF.blit(unPauseButtonSurf, unPauseButtonRect)
+		unPauseButtonRect.center = (int(surf.get_width()/2), int(surf.get_height()/2) + 25)
+		surf.blit(unPauseButtonSurf, unPauseButtonRect)
 		
+		# Event handling loop. Similar to the one in the main loop.
 		for event in pygame.event.get():
 			if event.type == QUIT:
 				pygame.quit()
@@ -94,8 +100,9 @@ def showPausedSreen():
 				if event.key == K_ESCAPE:
 					pygame.quit()
 					sys.exit()
+			# Uses the parameter's (surf) width and height to allow dynamic adjusting of window size 
 			if event.type == VIDEORESIZE:
-				DISPLAYSURF = pygame.display.set_mode(event.dict['size'], RESIZABLE)
+				surf = pygame.display.set_mode(event.dict['size'], RESIZABLE)
 		pygame.display.update()
 		FPSCLOCK.tick(FPS)
 	
