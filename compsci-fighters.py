@@ -1,12 +1,12 @@
 import pygame, sys
 from pygame.locals import *
-pygame.init()
-FPS = 24
+
+FPS = 30
 FPSCLOCK = pygame.time.Clock()
 
 #Game window dimensions
 WINDOWWIDTH = 480
-WINDOWHEIGHT = 680
+WINDOWHEIGHT = 700
 
 #COLORS 
 PAUSED_BG = (0,0,0,128)
@@ -15,6 +15,7 @@ MAIN_BG = (56, 134, 232)
 
 
 def main():
+	pygame.init()
 	player = pygame.image.load('new1.png')
 	playerX = int(WINDOWWIDTH/2) - int(player.get_rect().width/2)
 	playerY = WINDOWHEIGHT - player.get_rect().height
@@ -22,7 +23,7 @@ def main():
 	deltaX = 3
 	deltaY = 3
 	
-	global MENU_FONT, DISPLAYSURF
+	global DISPLAYSURF
 	
 	DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT), RESIZABLE)
 	pygame.display.set_caption('Dog fighter')
@@ -56,6 +57,7 @@ def main():
 					if event.key == K_ESCAPE:
 						pygame.quit()
 						sys.exit()
+			#adjustable screen event handling
 			if event.type == VIDEORESIZE:
 				DISPLAYSURF = pygame.display.set_mode(event.dict['size'], RESIZABLE)
 			if event.type == KEYUP:
@@ -94,7 +96,6 @@ def showPausedSreen():
 					sys.exit()
 			if event.type == VIDEORESIZE:
 				DISPLAYSURF = pygame.display.set_mode(event.dict['size'], RESIZABLE)
-				continue
 		pygame.display.update()
 		FPSCLOCK.tick(FPS)
 	
