@@ -92,6 +92,8 @@ def showPausedSreen():
 				if event.key == K_ESCAPE:
 					pygame.quit()
 					sys.exit()
+			if event.type == VIDEORESIZE:
+				DISPLAYSURF = pygame.display.set_mode(event.dict['size'], RESIZABLE)
 				continue
 		pygame.display.update()
 		FPSCLOCK.tick(FPS)
