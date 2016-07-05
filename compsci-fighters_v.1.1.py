@@ -62,22 +62,22 @@ class Plane(pygame.sprite.Sprite):
             if self.rect.x <=  0:
                 self.rect.x = 0
             else:
-                self.rect.x -= DELTA #self.delta
+                self.rect.x -= DELTA 
         if self.plane_direction == 'right':
-            if self.rect.x >= WINDOWWIDTH - self.rect.width:
-                self.rect.x = WINDOWWIDTH - self.rect.width
+            if self.rect.x >= int (SCREENLIMIT[0] - self.rect.width):
+                self.rect.x = int (SCREENLIMIT[0] - self.rect.width)
             else:
-                self.rect.x += DELTA #self.delta
+                self.rect.x += DELTA 
         if self.plane_direction == 'up':
             if self.rect.y <= 0:
                 self.rect.y = 0
             else:
-                self.rect.y -= DELTA #self.delta
+                self.rect.y -= DELTA 
         if self.plane_direction == 'down':
-            if self.rect.y >= WINDOWHEIGHT - self.rect.height:
-                self.rect.y = WINDOWHEIGHT - self.rect.height
+            if self.rect.y >=int (SCREENLIMIT[1] - self.rect.height):
+                self.rect.y = int (SCREENLIMIT[1] - self.rect.height)
             else:
-                self.rect.y += DELTA #self.delta
+                self.rect.y += DELTA 
 
 #---- Main ----
 def main():
@@ -97,9 +97,10 @@ def main():
     all_sprite_list.add(player)
     
     # Create game surface
-    global DISPLAYSURF
+    global DISPLAYSURF,SCREENLIMIT
     DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT), RESIZABLE)
     pygame.display.set_caption('Dog fighter')
+    SCREENLIMIT = [DISPLAYSURF.get_width(),DISPLAYSURF.get_height()]
 
     # Game loop
     while True:
@@ -140,6 +141,7 @@ def main():
             #adjustable screen event handling
             if event.type == VIDEORESIZE:
                 DISPLAYSURF = pygame.display.set_mode(event.dict['size'], RESIZABLE)
+                SCREENLIMIT = [DISPLAYSURF.get_width(),DISPLAYSURF.get_height()]
             if event.type == KEYUP:
                 player.plane_direction =''
             if event.type == QUIT:
