@@ -10,6 +10,8 @@ WINDOWHEIGHT = 700
 DELTA = 3
 
 #COLORS 
+START_FC = (0,0,255)
+START_BG = (255,255,255,128)
 PAUSED_BG = (0,0,0,128)
 PAUSED_FC = (255,255,255)
 MAIN_BG = (56, 134, 232)
@@ -101,6 +103,9 @@ def main():
     DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT), RESIZABLE)
     pygame.display.set_caption('Dog fighter')
     SCREENLIMIT = [DISPLAYSURF.get_width(),DISPLAYSURF.get_height()]
+    
+    start_screen(DISPLAYSURF)
+    
 
     # Game loop
     while True:
@@ -188,7 +193,32 @@ def showPausedSreen(surf):
         pygame.display.update()
         FPSCLOCK.tick(FPS)
     
-    
-        
+def start_screen(surf):
+    start_font = pygame.font.Font(None,50)
+    enter_font = pygame.font.Font('freesansbold.ttf',30)
+    lock_var = True
+    while lock_var:
+        surf.fill(START_BG)
+        display_message("Welcome to Dog Fighters",START_FC, surf,start_font,-100)
+        display_message("Press enter to play:",(234,23,154), surf,enter_font)
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_RETURN:
+                    lock_var = False
+            if event.type == VIDEORESIZE:
+                surf = pygame.display.set_mode(event.dict['size'], RESIZABLE)
+        pygame.display.update()
+        FPSCLOCK.tick(FPS)
+
+#display message to a surface object        
+def display_message(msg,color,surf,font,displacement = 0):
+    temp_surf = font.render(msg, True, color)
+    temp_rect = temp_surf.get_rect()
+    temp_rect.center = (surf.get_width()/2, surf.get_height()/2 + displacement)
+    surf.blit(temp_surf, temp_rect)
+
 if __name__ == '__main__':
     main()
