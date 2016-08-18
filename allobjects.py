@@ -76,7 +76,7 @@ class Player(Plane):
         Plane.__init__(self)
 
         #load plane
-        self.image = pygame.image.load("new1.png")
+        self.image = pygame.image.load("fighter1.png")
 
         #set transparent color
         self.image.set_colorkey(MAIN_BG)
