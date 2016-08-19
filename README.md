@@ -1,2 +1,2 @@
 # compsci-fighters
-# Classes: Enemies, ammo, user *ammo is TBD
+# Added spawning functionlity (beta), flight path functionality (Really beta), and Level summary screen (40% complete).
