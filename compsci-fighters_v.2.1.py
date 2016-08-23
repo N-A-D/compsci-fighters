@@ -49,8 +49,8 @@ def main():
     # Creates the player's plane and set its location
     player = allobjects.Player()
     player.screenlimit(SCREENLIMIT)
-    player.rect.x = int(WINDOWWIDTH/2) - int(player.rect.width/2)
-    player.rect.y = int (3*(WINDOWHEIGHT/4 )) - (player.rect.height) 
+    player.rect.x = int(DISPLAYSURF.get_width()/2) - int(player.rect.width/2)
+    player.rect.y = int (3*(DISPLAYSURF.get_height()/4 )) - (player.rect.height) 
 
     # Add player to sprite list
     all_sprite_list.add(player)
@@ -118,12 +118,9 @@ def main():
                 if ammo.rect.y < -10:
                     ammo_list.remove(ammo)
                     all_sprite_list.remove(ammo)
-                # Remove enemy once they leave the screen
-                if enemy.rect.y > SCREENLIMIT[1]:
-                    enemy_list.remove(enemy)
-                    all_sprite_list.remove(enemy)
+            # Remove enemy once they leave the screen
             for enemy in enemy_list:
-                if enemy.rect.y >= 755:
+                if enemy.rect.y >= SCREENLIMIT[1]:
                     enemy_list.remove(enemy)
                     all_sprite_list.remove(enemy)
                        
@@ -182,6 +179,17 @@ def start_screen(surf):
     start_font = pygame.font.Font(None,50)
     enter_font = pygame.font.Font('freesansbold.ttf',30)
     lock_var = True
+    
+    free_flyer = allobjects.Player()
+    free_flyer.rect.x = int(surf.get_width()/2) - int(free_flyer.rect.width/2)
+    free_flyer.rect.y = int (5.8*(surf.get_height()/6 )) - (free_flyer.rect.height)
+
+    start_sprite_list = pygame.sprite.Group()
+    start_sprite_list.add(free_flyer)
+    
+    pygame.time.set_timer(pygame.USEREVENT + 1, 3250)
+    pygame.time.set_timer(pygame.USEREVENT + 2, 5500)
+    pygame.time.set_timer(pygame.USEREVENT + 3, 7500)
     while lock_var:
         surf.fill(START_BG)
         display_message("Welcome to Dog Fighters",START_FC, surf,start_font,-100)
@@ -190,11 +198,30 @@ def start_screen(surf):
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
+            if event.type == USEREVENT +1:
+                cloud = allobjects.Cloud(1)
+                cloud.rect.x = random.randrange(surf.get_width() - cloud.rect.width)
+                cloud.rect.y = 0
+                start_sprite_list.add(cloud)
+            if event.type == USEREVENT + 2:
+                cloud = allobjects.Cloud(3)
+                cloud.rect.x = random.randrange(surf.get_width()  - cloud.rect.width)
+                cloud.rect.y = 0
+                start_sprite_list.add(cloud)
+            if event.type == USEREVENT + 3:
+                cloud = allobjects.Cloud(2)
+                cloud.rect.x = random.randrange(surf.get_width()  - cloud.rect.width)
+                cloud.rect.y = 0
+                start_sprite_list.add(cloud)
             if event.type == KEYDOWN:
                 if event.key == K_RETURN:
                     lock_var = False
             if event.type == VIDEORESIZE:
                 surf = pygame.display.set_mode(event.dict['size'], RESIZABLE)
+                free_flyer.rect.x = int(surf.get_width()/2) - int(free_flyer.rect.width/2)
+                free_flyer.rect.y = int (5.8*(surf.get_height()/6 )) - (free_flyer.rect.height)
+        start_sprite_list.update()
+        start_sprite_list.draw(DISPLAYSURF)
         pygame.display.update()
         FPSCLOCK.tick(FPS)
 
@@ -236,6 +263,13 @@ def displayLevelSummary(surface):
 #Function that generates enemies after each level
 def createEnemyFleet():
     pass 
+
+#display message to a surface object        
+def display_message(msg,color,surf,font,displacement = 0):
+    temp_surf = font.render(msg, True, color)
+    temp_rect = temp_surf.get_rect()
+    temp_rect.center = (surf.get_width()/2, surf.get_height()/2 + displacement)
+    surf.blit(temp_surf, temp_rect)
 
 if __name__ == '__main__':
     main()
