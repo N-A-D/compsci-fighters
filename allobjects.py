@@ -1,7 +1,8 @@
 import pygame, sys, math, random
 
-MAIN_BG = (56, 134, 232)
 DELTA = 3
+MAIN_BG = (56, 134, 232)
+START_BG = (186,241,246,128)
 
 # ----- Classes----
 class Ammo(pygame.sprite.Sprite):
@@ -24,7 +25,7 @@ class Ammo(pygame.sprite.Sprite):
             
 
 class Plane(pygame.sprite.Sprite):
-    
+    # This is the plane class
     screen_width  = 0
     screen_hieght = 0
     
@@ -37,9 +38,9 @@ class Plane(pygame.sprite.Sprite):
 
             
 class Enemy(Plane):
-    # This class represents the Ammunition.
+    # This enemy class inherit from the plane class.
     small = "bomber1.png"
-    big = "bomber2.png"
+    big   = "bomber2.png"
     __speed = 0
             
     def __init__(self,Type):
@@ -79,12 +80,10 @@ class Enemy(Plane):
             self.rect.x = math.cos(dx)
 
 class Player(Plane):
-    # This class represents the Ammunition.
-
+    # The player class inherit from the plane class.
+    
     fighter_direction = ''    # Sets the direction of plane
     
-
-                
     def __init__(self):
         # Call parent(Sprite) constructor
         Plane.__init__(self)
@@ -122,6 +121,26 @@ class Player(Plane):
                 self.rect.y = int (self.screen_hieght - self.rect.height)
             else:
                 self.rect.y += DELTA
+                
+class Cloud(Plane):
+    #This class inherits from the plane class
+
+    def __init__(self,size):
+        Plane.__init__(self)
+        #load cloud
+        if size == 1:
+            self.image = pygame.image.load("smallcloud.png")
+        elif size == 2:
+            self.image = pygame.image.load("cloud.png")
+        elif size == 3:
+            self.image = pygame.image.load("big_cloud.png")
+        #set transparent color
+        self.image.set_colorkey(START_BG)
+        # Set image rectangle x and y coordinates
+        self.rect = self.image.get_rect()
+
+    def update(self):
+        self.rect.y +=2
             
 #class function to retrieve the width of enemy planes
 def getEnemyWidth(Type):
